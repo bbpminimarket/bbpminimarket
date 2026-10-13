@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BISHAL BIJOY PALLABI MINI MARKET - Falakata</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter & Hind Siliguri for Bengali support) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#D9232D',
+                            skyblue: '#991118',
+                            yellow: '#FFC801',
+                            gold: '#D4AF37',
+                            green: '#00875A',
+                            navy: '#0F172A',
+                            lightBg: '#FFFDF6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Hind Siliguri', 'sans-serif'],
+                        bengali: ['Hind Siliguri', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+        }
+        .festive-border {
+            border-image: linear-gradient(to right, #D9232D, #FFC801, #00875A) 1;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Contact Bar -->
+    <div class="bg-brand-darkRed text-white text-xs py-2 px-4 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-4 flex-wrap justify-center sm:justify-start">
+                <span class="flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-brand-yellow"></i> 
+                    <span>Shimultala, Talukertari, Falakata, Madari Road - 735211</span>
+                </span>
+                <span class="hidden md:inline text-red-300">|</span>
+                <span id="storeStatusBadge" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500 text-white">
+                    <span class="w-2 h-2 rounded-full bg-white mr-1.5 animate-pulse"></span> OPEN NOW
+                </span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="tel:+919641958052" class="hover:text-brand-yellow transition font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-phone"></i> 9641958052
+                </a>
+                <a href="https://wa.me/919641958052" target="_blank" class="hover:text-emerald-300 transition font-semibold flex items-center gap-1 text-emerald-400">
+                    <i class="fa-brands fa-whatsapp"></i> 6294958738
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+            <!-- Brand Logo / Name -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-red text-brand-yellow font-black text-xl md:text-2xl h-12 w-12 rounded-xl flex items-center justify-center border-2 border-brand-yellow shadow-md">
+                    BBP
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold leading-tight text-brand-darkRed uppercase tracking-wide">
+                        Bishal Bijoy Pallabi
+                    </h1>
+                    <p class="text-xs font-bold text-slate-600 tracking-wider">
+                        MINI MARKET <span class="text-brand-green font-bengali font-normal">( বিশাল বিজয় পল্লবী মিনি মার্কেট )</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center space-x-3 md:space-x-4">
+                <!-- Search Button (Mobile Toggle) -->
+                <button onclick="toggleMobileSearch()" class="md:hidden text-slate-600 hover:text-brand-red p-2 rounded-lg bg-slate-100">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+
+                <!-- Xerox & Photo Quick Action -->
+                <a href="#xerox-section" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-lg text-xs font-semibold hover:shadow-md transition">
+                    <i class="fa-solid fa-print"></i> Photo / Xerox
+                </a>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartModal()" class="relative bg-brand-red text-white p-2.5 sm:px-4 sm:py-2 rounded-xl hover:bg-brand-darkRed transition flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-cart-shopping text-lg sm:text-base"></i>
+                    <span class="hidden sm:inline font-semibold">Cart</span>
+                    <span id="cartCountBadge" class="absolute -top-2 -right-2 bg-brand-yellow text-slate-900 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow">
+                        0
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Dropdown -->
+        <div id="mobileSearchContainer" class="hidden px-4 pb-3 md:hidden">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" onkeyup="filterProducts()" placeholder="Search stationery, gifts, clothes, jewelry..." class="w-full bg-slate-100 pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section class="bg-gradient-to-r from-red-900 via-brand-darkRed to-rose-950 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-7 space-y-4 text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/40 text-brand-yellow px-3 py-1 rounded-full text-xs font-semibold">
+                        <i class="fa-solid fa-store"></i> Your One-Stop Local Shopping Destination in Falakata
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
+                        Quality Goods & Instant Printing Services
+                    </h2>
+                    <p class="text-slate-200 text-sm sm:text-base max-w-xl font-bengali">
+                        এখানে স্টেশনরী দ্রব্য, গিফট আইটেম, পুরুষ ও মহিলাদের সমস্ত রকম পোশাক, জুয়েলারি, মোবাইল এক্সেসরিজ ও জুতো সুলভ মূল্যে পাওয়া যায়। জেরক্স ও ফটো প্রিন্ট করা হয়।
+                    </p>
+                    <div class="pt-2 flex flex-wrap justify-center md:justify-start gap-3">
+                        <a href="#catalog" class="bg-brand-yellow hover:bg-yellow-400 text-slate-900 font-bold px-5 py-2.5 rounded-xl transition shadow-lg text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i> Shop Catalog
+                        </a>
+                        <a href="#xerox-section" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-5 py-2.5 rounded-xl transition text-sm flex items-center gap-2 backdrop-blur-sm">
+                            <i class="fa-solid fa-camera"></i> Photo Print / Xerox
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Highlights Banner -->
+                <div class="md:col-span-5 bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 text-white shadow-xl">
+                    <h3 class="font-bold text-lg mb-3 border-b border-white/20 pb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-star text-brand-yellow mr-2"></i> Quick Store Highlights</span>
+                        <span class="text-xs bg-emerald-500/80 px-2 py-0.5 rounded text-white">Falakata Market</span>
+                    </h3>
+                    <ul class="space-y-2.5 text-xs sm:text-sm">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> Stationery, Pens, Notebooks & School Needs
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> Men's & Women's Fashion & Accessories
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> Gift Items, Toys & Fancy Jewelry Collection
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> Instant HD Photo Printing & Document Xerox
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Catalog Section -->
+    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Product Catalog</h2>
+                <p class="text-xs text-slate-500">Browse categories or search for items available in-store</p>
+            </div>
+
+            <!-- Desktop Search Bar -->
+            <div class="relative w-full md:w-80">
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search stationery, dresses, jewelry..." class="w-full bg-white border border-slate-200 pl-10 pr-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-red shadow-sm">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex items-center space-x-2 overflow-x-auto hide-scrollbar pb-2 mb-6 border-b border-slate-200">
+            <button onclick="setActiveCategory('all')" id="cat-btn-all" class="cat-btn bg-brand-red text-white font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap shadow-sm transition">
+                <i class="fa-solid fa-border-all mr-1"></i> All Items
+            </button>
+            <button onclick="setActiveCategory('stationery')" id="cat-btn-stationery" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-pen-ruler mr-1 text-blue-600"></i> Stationery & Books
+            </button>
+            <button onclick="setActiveCategory('gifts')" id="cat-btn-gifts" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-gift mr-1 text-pink-500"></i> Gifts & Toys
+            </button>
+            <button onclick="setActiveCategory('garments')" id="cat-btn-garments" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-shirt mr-1 text-indigo-600"></i> Men & Women Apparel
+            </button>
+            <button onclick="setActiveCategory('jewelry')" id="cat-btn-jewelry" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-gem mr-1 text-amber-500"></i> Jewelry & Fashion
+            </button>
+            <button onclick="setActiveCategory('electronics')" id="cat-btn-electronics" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-headphones mr-1 text-emerald-600"></i> Electronics & Mobile
+            </button>
+            <button onclick="setActiveCategory('footwear')" id="cat-btn-footwear" class="cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition">
+                <i class="fa-solid fa-shoe-prints mr-1 text-orange-500"></i> Footwear
+            </button>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <!-- Dynamic Products Injected via JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="noResults" class="hidden text-center py-12">
+            <i class="fa-solid fa-magnifying-glass-minus text-4xl text-slate-300 mb-3"></i>
+            <h3 class="text-slate-600 font-bold text-lg">No items matched your search</h3>
+            <p class="text-slate-400 text-xs">Try searching for stationery, saree, headphones, or gifts</p>
+        </div>
+    </main>
+
+    <!-- Photo Print & Xerox Service Section -->
+    <section id="xerox-section" class="bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Info Side -->
+                <div class="lg:col-span-5 space-y-4">
+                    <span class="bg-blue-600/30 text-blue-400 text-xs font-bold px-3 py-1 rounded-full uppercase border border-blue-500/30">
+                        Instant Store Printing
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold">
+                        Online Document Xerox & Photo Print Request
+                    </h2>
+                    <p class="text-slate-300 text-sm font-bengali">
+                        এখানে জেরক্স, রঙিন ফটো প্রিন্ট, পাসপোর্ট ফটো ও পেপার ল্যামিনেশন দ্রুত করা হয়। সরাসরি ফাইল সেন্ড করুন বা কোটেশন নিন।
+                    </p>
+                    
+                    <div class="space-y-3 text-xs sm:text-sm text-slate-300 pt-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">1</div>
+                            <span>Choose Xerox type (B&W / Color) or Photo Print</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">2</div>
+                            <span>Upload document preview / specify page count</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">3</div>
+                            <span>Send order via WhatsApp & collect from store!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Simulator Card -->
+                <div class="lg:col-span-7 bg-slate-800 border border-slate-700 p-6 rounded-2xl shadow-2xl">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-blue-400"></i> Printing Price Estimator & Booking
+                    </h3>
+
+                    <form id="printForm" onsubmit="handlePrintRequest(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Service Type</label>
+                                <select id="printServiceType" onchange="calculatePrintPrice()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <option value="bw_xerox">A4 Document Xerox - Black & White (₹3 / pg)</option>
+                                    <option value="color_print">A4 Color Print (₹10 / pg)</option>
+                                    <option value="passport_photo">Passport Size Photos (8 Copies - ₹50)</option>
+                                    <option value="glossy_photo">4x6 Glossy Photo Print (₹25 / photo)</option>
+                                    <option value="lamination">A4 Document Lamination (₹25 / page)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Number of Copies / Pages</label>
+                                <input type="number" id="printQuantity" min="1" value="1" onchange="calculatePrintPrice()" onkeyup="calculatePrintPrice()" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select File / Photo (Simulator)</label>
+                            <input type="file" id="printFileInput" accept="image/*,.pdf,.doc,.docx" onchange="previewSelectedFile(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                        </div>
+
+                        <!-- Document File Preview Display -->
+                        <div id="filePreviewBox" class="hidden bg-slate-900/50 p-3 rounded-lg border border-slate-700 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i id="fileIcon" class="fa-solid fa-file-pdf text-red-400 text-2xl"></i>
+                                <div>
+                                    <p id="fileName" class="text-xs font-semibold text-white truncate max-w-[200px]">document.pdf</p>
+                                    <p id="fileSize" class="text-[10px] text-slate-400">1.2 MB</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check"></i> Ready</span>
+                        </div>
+
+                        <div class="flex items-center justify-between border-t border-slate-700 pt-4">
+                            <div>
+                                <p class="text-xs text-slate-400">Estimated Total:</p>
+                                <p id="printTotalPrice" class="text-xl font-black text-brand-yellow">₹3</p>
+                            </div>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition shadow-lg">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Submit Order via WhatsApp
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="text-center max-w-xl mx-auto mb-8">
+            <h2 class="text-2xl font-extrabold text-slate-900">Customer Feedback & Reviews</h2>
+            <p class="text-xs text-slate-500 mt-1">See what our customers from Falakata & Shimultala say about us</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="reviewsContainer">
+            <!-- Initial Default Reviews -->
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Prosenjit Das</h4>
+                        <p class="text-[10px] text-slate-400">Falakata Resident</p>
+                    </div>
+                    <div class="text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    "Great store! Got stationery for my school going children and emergency xerox done instantly. Very polite behavior."
+                </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Sunita Roy</h4>
+                        <p class="text-[10px] text-slate-400">Shimultala</p>
+                    </div>
+                    <div class="text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed font-bengali">
+                    "রেডিমেড পোশাক এবং গয়নার কালেকশন বেশ ভালো। দামও বেশ রিজনেবল।"
+                </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Bikash Paul</h4>
+                        <p class="text-[10px] text-slate-400">Madari Road</p>
+                    </div>
+                    <div class="text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    "Convenient local market store. Bought headphones and mobile accessories. Fast photo print service too."
+                </p>
+            </div>
+        </div>
+
+        <!-- Add Review Form -->
+        <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200 max-w-2xl mx-auto">
+            <h3 class="font-bold text-slate-800 text-sm mb-3">Leave a Review for B.B.P Mini Market</h3>
+            <form onsubmit="addNewReview(event)" class="space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="text" id="reviewName" placeholder="Your Name" required class="bg-white border border-slate-300 text-xs rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-red">
+                    <select id="reviewRating" class="bg-white border border-slate-300 text-xs rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-red">
+                        <option value="5">⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+                        <option value="4">⭐⭐⭐⭐ (4/5 Stars)</option>
+                        <option value="3">⭐⭐⭐ (3/5 Stars)</option>
+                    </select>
+                </div>
+                <textarea id="reviewComment" rows="2" placeholder="Write your feedback..." required class="w-full bg-white border border-slate-300 text-xs rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-red"></textarea>
+                <button type="submit" class="bg-brand-red hover:bg-brand-darkRed text-white font-bold text-xs px-4 py-2 rounded-lg transition shadow-sm">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Store Location & Contact Details -->
+    <section class="bg-slate-200 py-10 px-4 sm:px-6 lg:px-8 border-t border-slate-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <div class="lg:col-span-5 space-y-4">
+                    <h2 class="text-2xl font-extrabold text-slate-900">Visit Our Shop</h2>
+                    <p class="text-xs text-slate-600">Located conveniently at Madari Road, Falakata. Drop by for all your daily needs!</p>
+
+                    <div class="space-y-3 bg-white p-5 rounded-2xl shadow-sm">
+                        <div class="flex items-start gap-3 text-xs">
+                            <i class="fa-solid fa-location-dot text-brand-red text-base mt-0.5"></i>
+                            <div>
+                                <strong class="block text-slate-800">Address:</strong>
+                                <span class="text-slate-600">Shimultala, Talukertari, Falakata, Madari Road, PIN-735211, West Bengal</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 text-xs">
+                            <i class="fa-solid fa-phone text-brand-green text-base mt-0.5"></i>
+                            <div>
+                                <strong class="block text-slate-800">Contact Numbers:</strong>
+                                <span class="text-slate-600">9641958052 / 6294958738</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 text-xs">
+                            <i class="fa-solid fa-clock text-amber-500 text-base mt-0.5"></i>
+                            <div>
+                                <strong class="block text-slate-800">Opening Hours:</strong>
+                                <span class="text-slate-600">Monday - Sunday: 8:00 AM - 9:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <a href="tel:+919641958052" class="flex-1 bg-brand-red text-white py-2.5 rounded-xl text-xs font-bold text-center hover:bg-brand-darkRed transition shadow-sm">
+                            <i class="fa-solid fa-phone mr-1"></i> Call Store
+                        </a>
+                        <a href="https://wa.me/919641958052?text=Hello%20BBP%20Mini%20Market,%20I%20have%20an%20inquiry." target="_blank" class="flex-1 bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold text-center hover:bg-emerald-700 transition shadow-sm">
+                            <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Google Map Embed Simulation -->
+                <div class="lg:col-span-7 bg-white p-3 rounded-2xl shadow-md border border-slate-200">
+                    <div class="w-full h-72 rounded-xl bg-slate-200 relative overflow-hidden flex items-center justify-center border border-slate-300">
+                        <iframe class="w-full h-full rounded-xl" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14285.8309193214!2d89.1866!3d26.5222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e2518e38d6bd19%3A0x6b7bb78d91f21151!2sFalakata%2C%20West%20Bengal%20735211!5e0!3m2!1sen!2sin!4v1700000000000" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="font-semibold text-slate-200">BISHAL BIJOY PALLABI MINI MARKET (B.B.P. Mini Market)</p>
+            <p>Shimultala, Talukertari, Falakata, Madari Road, PIN-735211</p>
+            <p class="text-[10px] text-slate-500 pt-2">© 2026 B.B.P. Mini Market. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- CART MODAL (Slide-over / Overlay) -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div onclick="toggleCartModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Slide Over Box -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col z-10">
+            <!-- Modal Header -->
+            <div class="p-4 bg-brand-darkRed text-white flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-brand-yellow"></i>
+                    <h3 class="font-bold text-base">Your Shopping Cart</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="text-slate-200 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsList" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Cart Summary & WhatsApp Checkout -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between font-bold text-slate-800">
+                    <span>Total Amount:</span>
+                    <span id="cartGrandTotal" class="text-xl text-brand-red">₹0</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-semibold text-slate-600">Your Name & Delivery Note (Optional):</label>
+                    <input type="text" id="customerNote" placeholder="e.g. Rahul - Picking up today at 5 PM" class="w-full text-xs p-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-red">
+                </div>
+
+                <button onclick="checkoutWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Send Order to Store via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Product Database tailored to B.B.P. Mini Market offerings
+        const products = [
+            // Stationery
+            { id: 101, name: "Classmate Notebook (Hard Bound)", category: "stationery", price: 65, icon: "fa-book", image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop&q=60" },
+            { id: 102, name: "Gel Pen Set (10 Pack)", category: "stationery", price: 80, icon: "fa-pen", image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=300&auto=format&fit=crop&q=60" },
+            { id: 103, name: "Student Geometry Box", category: "stationery", price: 120, icon: "fa-ruler-combined", image: "https://images.unsplash.com/photo-1585336261026-8f5786372966?w=300&auto=format&fit=crop&q=60" },
+            
+            // Gifts & Toys
+            { id: 201, name: "Soft Teddy Bear Gift (Medium)", category: "gifts", price: 350, icon: "fa-heart", image: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=300&auto=format&fit=crop&q=60" },
+            { id: 202, name: "Kids Remote Control Car", category: "gifts", price: 450, icon: "fa-gamepad", image: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=300&auto=format&fit=crop&q=60" },
+            { id: 203, name: "Decorative Photo Frame", category: "gifts", price: 180, icon: "fa-image", image: "https://images.unsplash.com/photo-1534349735944-2b3a6f7a268f?w=300&auto=format&fit=crop&q=60" },
+
+            // Garments
+            { id: 301, name: "Men's Cotton Casual Shirt", category: "garments", price: 499, icon: "fa-shirt", image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&auto=format&fit=crop&q=60" },
+            { id: 302, name: "Women's Designer Saree / Kurti", category: "garments", price: 750, icon: "fa-person-dress", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&auto=format&fit=crop&q=60" },
+            { id: 303, name: "Kids Printed T-Shirt", category: "garments", price: 199, icon: "fa-child", image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300&auto=format&fit=crop&q=60" },
+
+            // Jewelry & Fashion
+            { id: 401, name: "Traditional Gold-Plated Necklace Set", category: "jewelry", price: 320, icon: "fa-gem", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&auto=format&fit=crop&q=60" },
+            { id: 402, name: "Fancy Earrings Collection", category: "jewelry", price: 120, icon: "fa-ring", image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=300&auto=format&fit=crop&q=60" },
+
+            // Electronics & Mobile
+            { id: 501, name: "Fast Charging Type-C Cable & Adapter", category: "electronics", price: 250, icon: "fa-plug", image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=300&auto=format&fit=crop&q=60" },
+            { id: 502, name: "Bass Stereo Wired Headphones", category: "electronics", price: 299, icon: "fa-headphones", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=60" },
+
+            // Footwear
+            { id: 601, name: "Casual Men's Slippers / Sandals", category: "footwear", price: 249, icon: "fa-shoe-prints", image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=300&auto=format&fit=crop&q=60" },
+            { id: 602, name: "Women's Comfortable Fancy Footwear", category: "footwear", price: 299, icon: "fa-socks", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300&auto=format&fit=crop&q=60" }
+        ];
+
+        // State Management
+        let cart = [];
+        let currentCategory = 'all';
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            calculatePrintPrice();
+            checkStoreOpenStatus();
+        });
+
+        // Store Open/Closed Dynamic Checker
+        function checkStoreOpenStatus() {
+            const now = new Date();
+            const hours = now.getHours();
+            const badge = document.getElementById('storeStatusBadge');
+            // Store open 8 AM to 9 PM
+            if (hours >= 8 && hours < 21) {
+                badge.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500 text-white";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-white mr-1.5 animate-pulse"></span> OPEN NOW`;
+            } else {
+                badge.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-600 text-white";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-white mr-1.5"></span> CLOSED (Opens 8 AM)`;
+            }
+        }
+
+        // Render Products
+        function renderProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            const noResults = document.getElementById('noResults');
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="h-36 sm:h-44 w-full bg-slate-100 relative overflow-hidden">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/300x200/d9232d/ffffff?text=BBP+Mini+Market';">
+                            <span class="absolute top-2 right-2 bg-slate-900/70 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                ₹${item.price}
+                            </span>
+                        </div>
+                        <div class="p-3">
+                            <span class="text-[10px] font-bold tracking-wider text-brand-red uppercase">${item.category}</span>
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm line-clamp-2 mt-0.5">${item.name}</h3>
+                        </div>
+                    </div>
+                    <div class="p-3 pt-0">
+                        <button onclick="addToCart(${item.id})" class="w-full bg-slate-900 hover:bg-brand-red text-white py-2 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Category Filter Tabs
+        function setActiveCategory(cat) {
+            currentCategory = cat;
+            
+            // Update active styling
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap border border-slate-200 transition";
+            });
+
+            const activeBtn = document.getElementById(`cat-btn-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = "cat-btn bg-brand-red text-white font-semibold text-xs px-4 py-2 rounded-xl whitespace-nowrap shadow-sm transition";
+            }
+
+            filterProducts();
+        }
+
+        // Search & Filter combined
+        function filterProducts() {
+            const query = (document.getElementById('searchInput').value || document.getElementById('mobileSearchInput').value || '').toLowerCase();
+            
+            const filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchesQuery = p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+
+            renderProducts(filtered);
+        }
+
+        function toggleMobileSearch() {
+            const container = document.getElementById('mobileSearchContainer');
+            container.classList.toggle('hidden');
+        }
+
+        // Shopping Cart Logic
+        function addToCart(productId) {
+            const item = products.find(p => p.id === productId);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === productId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartUI();
+            toggleCartModal(true); // Open cart preview
+        }
+
+        function updateCartQuantity(productId, delta) {
+            const index = cart.findIndex(c => c.id === productId);
+            if (index !== -1) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cartItemsList');
+            const cartBadge = document.getElementById('cartCountBadge');
+            const cartTotal = document.getElementById('cartGrandTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            cartBadge.innerText = totalItems;
+            cartTotal.innerText = `₹${totalPrice}`;
+
+            if (cart.length === 0) {
+                cartList.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-2"></i>
+                        <p class="text-xs">Your cart is currently empty.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            cartList.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
+                        <div>
+                            <h4 class="font-bold text-xs text-slate-800 line-clamp-1">${item.name}</h4>
+                            <p class="text-[11px] font-bold text-brand-red">₹${item.price} x ${item.qty} = ₹${item.price * item.qty}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg p-1">
+                        <button onclick="updateCartQuantity(${item.id}, -1)" class="w-6 h-6 rounded flex items-center justify-center text-slate-600 hover:bg-slate-100 font-bold">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="updateCartQuantity(${item.id}, 1)" class="w-6 h-6 rounded flex items-center justify-center text-slate-600 hover:bg-slate-100 font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartModal(forceOpen = false) {
+            const modal = document.getElementById('cartModal');
+            if (forceOpen) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        // WhatsApp Checkout Direct Link
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add some items before placing an order.");
+                return;
+            }
+
+            const note = document.getElementById('customerNote').value.trim();
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            let msg = `🛍️ *NEW PRODUCT ORDER - B.B.P. MINI MARKET*\n`;
+            msg += `------------------------------------\n`;
+            cart.forEach((item, index) => {
+                msg += `${index + 1}. *${item.name}* x ${item.qty} = ₹${item.price * item.qty}\n`;
+            });
+            msg += `------------------------------------\n`;
+            msg += `💰 *Total Amount:* ₹${totalPrice}\n`;
+            if (note) {
+                msg += `📝 *Customer Note:* ${note}\n`;
+            }
+            msg += `\nPlease confirm availability and pickup time. Thank you!`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            window.open(`https://wa.me/919641958052?text=${encodedMsg}`, '_blank');
+        }
+
+        // Printing Calculator
+        function calculatePrintPrice() {
+            const type = document.getElementById('printServiceType').value;
+            const qty = parseInt(document.getElementById('printQuantity').value) || 1;
+            let unitPrice = 3;
+
+            switch(type) {
+                case 'bw_xerox': unitPrice = 3; break;
+                case 'color_print': unitPrice = 10; break;
+                case 'passport_photo': unitPrice = 50; break;
+                case 'glossy_photo': unitPrice = 25; break;
+                case 'lamination': unitPrice = 25; break;
+            }
+
+            const total = unitPrice * qty;
+            document.getElementById('printTotalPrice').innerText = `₹${total}`;
+        }
+
+        // File Selection Simulator
+        function previewSelectedFile(event) {
+            const file = event.target.files[0];
+            const box = document.getElementById('filePreviewBox');
+            if (file) {
+                document.getElementById('fileName').innerText = file.name;
+                document.getElementById('fileSize').innerText = `${(file.size / 1024).toFixed(1)} KB`;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        // Submit Print Request to WhatsApp
+        function handlePrintRequest(e) {
+            e.preventDefault();
+            const serviceSelect = document.getElementById('printServiceType');
+            const serviceText = serviceSelect.options[serviceSelect.selectedIndex].text;
+            const qty = document.getElementById('printQuantity').value;
+            const totalPrice = document.getElementById('printTotalPrice').innerText;
+            const fileInput = document.getElementById('printFileInput');
+
+            let msg = `🖨️ *XEROX / PHOTO PRINT REQUEST*\n`;
+            msg += `------------------------------------\n`;
+            msg += `📌 *Service:* ${serviceText}\n`;
+            msg += `🔢 *Quantity / Pages:* ${qty}\n`;
+            msg += `💰 *Estimated Price:* ${totalPrice}\n`;
+            if (fileInput.files.length > 0) {
+                msg += `📄 *Attached File Name:* ${fileInput.files[0].name}\n`;
+            }
+            msg += `\nHello, I need this printing work done. I will send/deliver the document file here.`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            window.open(`https://wa.me/919641958052?text=${encodedMsg}`, '_blank');
+        }
+
+        // Dynamic Customer Review Appender
+        function addNewReview(e) {
+            e.preventDefault();
+            const name = document.getElementById('reviewName').value.trim();
+            const rating = parseInt(document.getElementById('reviewRating').value);
+            const comment = document.getElementById('reviewComment').value.trim();
+
+            if (!name || !comment) return;
+
+            const stars = "⭐".repeat(rating);
+            const container = document.getElementById('reviewsContainer');
+
+            const newCard = document.createElement('div');
+            newCard.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200 animate-fade-in";
+            newCard.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">${name}</h4>
+                        <p class="text-[10px] text-slate-400">Verified Customer</p>
+                    </div>
+                    <div class="text-amber-400 text-xs">${stars}</div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">${comment}</p>
+            `;
+
+            container.prepend(newCard);
+            e.target.reset();
+            alert("Thank you for your feedback! Your review has been added.");
+        }
+    </script>
+</body>
+</html>
